@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-thrive",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": false,
   "description": "Shared ESLint configurations used across the Thrive organization.",
   "repository": {
@@ -27,7 +27,9 @@
     "prepare": "husky install",
     "test": "jest --passWithNoTests"
   },
-  "eslintConfig": {},
+  "eslintConfig": {
+    "extends": "./.internal/index.js"
+  },
   "prettier": {
     "printWidth": 120,
     "singleQuote": true
@@ -42,6 +44,7 @@
     "@babel/plugin-transform-react-jsx": "7.17.3",
     "eslint": "8.12.0",
     "eslint-config-react-app": "7.0.0",
+    "eslint-config-thrive": "0.0.1",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "husky": "7.0.4",
     "jest": "27.5.1",
