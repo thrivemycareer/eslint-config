@@ -29,17 +29,13 @@ yarn add eslint-plugin-unicorn --dev --exact
 yarn add eslint-config-thrive --dev --exact
 ```
 
-## add `.eslintConfig` field to `package.json`
+## add `eslintConfig` property to `package.json`
 
 ```jsonc
 // ...
 "eslintConfig": {
   "extends": "thrive"
 },
-"eslintIgnore": [
-  "build",
-  "coverage"
-],
 // ...
 ```
 
@@ -83,4 +79,15 @@ indent_size = 2
 
 [docker-compose.yml]
 indent_size = 4
+```
+
+## add `prettier` property to `package.json`
+
+```jsonc
+// ...
+"prettier": {
+  "printWidth": 120,
+  "singleQuote": true
+},
+// ...
 ```
