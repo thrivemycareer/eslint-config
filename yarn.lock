@@ -2275,6 +2275,14 @@ eslint-config-react-app@7.0.0:
     eslint-plugin-react-hooks "^4.3.0"
     eslint-plugin-testing-library "^5.0.1"
 
+eslint-config-thrive@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-thrive/-/eslint-config-thrive-0.0.1.tgz#62f8d059ede5420cbc81a3df28448ad2af38db4c"
+  integrity sha512-nDCKEWO3lFaVEeypVBZ61UrUFFnYMc+mT10ZS1rKWsSQHhgzEDI9bq9uT2dkqhuAZElyTqpLw1YKedhQOVO5Fw==
+  dependencies:
+    eslint-plugin-import "2.25.4"
+    eslint-plugin-unicorn ">=42.0.0"
+
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.6.tgz#4048b958395da89668252001dbd9eca6b83bacbd"
