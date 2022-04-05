@@ -57,7 +57,7 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
 
       - name: run codebase format check
-        run: yarn format --if-present
+        run: yarn format
 
   Lint:
     needs: [Setup]
@@ -83,7 +83,7 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
 
       - name: run codebase lint check
-        run: yarn lint --if-present
+        run: yarn lint
 
   Test:
     needs: [Setup]
@@ -135,7 +135,7 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
 
       - name: build codebase
-        run: yarn build --if-present
+        run: yarn build
 
   Publish:
     needs: [Build]
@@ -173,7 +173,7 @@ jobs:
           CI: true
 
       - name: build codebase
-        run: yarn build --if-present
+        run: yarn build
 
       - name: get commit short hash
         id: commit_hash

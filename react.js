@@ -1,17 +1,17 @@
 module.exports = {
   root: true,
-  plugins: ["jsx-a11y"],
-  extends: ["react-app", "react-app/jest", "plugin:jsx-a11y/strict", "plugin:unicorn/recommended"],
+  plugins: ['jsx-a11y'],
+  extends: ['react-app', 'react-app/jest', 'plugin:jsx-a11y/strict', 'plugin:unicorn/recommended'],
   overrides: [
     {
-      files: ["src/setupTests.ts"],
-      rules: { "unicorn/filename-case": "off" },
+      files: ['src/setupTests.ts'],
+      rules: { 'unicorn/filename-case': 'off' },
     },
     {
-      files: ["*.ts", "*.tsx"],
+      files: ['*.ts', '*.tsx'],
       rules: {
-        "unicorn/prevent-abbreviations": [
-          "error",
+        'unicorn/prevent-abbreviations': [
+          'error',
           {
             replacements: {
               props: false,
@@ -22,20 +22,20 @@ module.exports = {
     },
   ],
   rules: {
-    "import/order": [
-      "warn",
+    'import/order': [
+      'warn',
       {
         groups: [
-          ["builtin", "external"],
-          ["sibling", "parent"],
+          ['builtin', 'external'],
+          ['sibling', 'parent'],
         ],
-        "newlines-between": "always-and-inside-groups",
+        'newlines-between': 'always-and-inside-groups',
         alphabetize: {
-          order: "asc",
+          order: 'asc',
           caseInsensitive: true,
         },
       },
     ],
-    "import/newline-after-import": "warn",
+    'import/newline-after-import': 'warn',
   },
 };
