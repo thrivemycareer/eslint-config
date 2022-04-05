@@ -19,7 +19,15 @@
 
 ### Peer Dependencies
 
+```zsh
+yarn add eslint-plugin-unicorn --dev --exact
+```
+
 ### ESLint Configs
+
+```zsh
+yarn add eslint-config-thrive --dev --exact
+```
 
 ## add `.eslintConfig` field to `package.json`
 
