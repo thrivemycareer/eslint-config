@@ -10,8 +10,8 @@
 <p align="center"><strong>Shared ESLint Configs</strong></p>
 
 <p align="center">
-  <a href="https://github.com/thrivemycareer/eslint-config-thrive/actions/workflows/continuous-integration.yml">
-    <img src="https://github.com/thrivemycareer/eslint-config-thrive/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration Badge" />
+  <a href="https://github.com/thrivemycareer/eslint-config/actions/workflows/continuous-integration.yml">
+    <img src="https://github.com/thrivemycareer/eslint-config/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration Badge" />
   </a>
 </p>
 
