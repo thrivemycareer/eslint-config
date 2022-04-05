@@ -1,0 +1,189 @@
+name: Canary Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Setup:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: install codebase dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
+  Format:
+    needs: [Setup]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: run codebase format check
+        run: yarn format --if-present
+
+  Lint:
+    needs: [Setup]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: run codebase lint check
+        run: yarn lint --if-present
+
+  Test:
+    needs: [Setup]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: run codebase tests
+        run: yarn test
+
+  Build:
+    needs: [Format, Lint, Test]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout codebase
+        uses: actions/checkout@v3
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: build codebase
+        run: yarn build --if-present
+
+  Publish:
+    needs: [Build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        node: [14]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: setup node v${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: "https://registry.npmjs.org"
+
+      - name: node_modules cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.node }}-yarn-
+
+      - name: install codebase dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: build codebase
+        run: yarn build --if-present
+
+      - name: get commit short hash
+        id: commit_hash
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: set version
+        run: npm version 0.0.0-${{ steps.commit_hash.outputs.sha_short }}
+
+      - name: publish to npm
+        run: npm publish --tag canary
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
